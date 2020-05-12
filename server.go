@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./handlers"
+	"github.com/aeolyus/gull/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

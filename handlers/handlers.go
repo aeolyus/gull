@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"../utils"
 	"encoding/json"
 	"fmt"
+	"github.com/aeolyus/gull/utils"
 	"log"
 	"net/http"
 
