@@ -15,6 +15,7 @@ func main() {
 	r := mux.NewRouter()
 	r.Handle("/", http.FileServer(http.Dir("./static"))).Methods("GET")
 	r.HandleFunc("/all", a.ListAll).Methods("GET")
+	r.HandleFunc("/s/{alias:.*}", a.GetURL).Methods("GET")
 	http.Handle("/", r)
 
 	log.Println("Server is listening on port 8081")

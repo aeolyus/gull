@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -34,4 +36,17 @@ func (a *App) ListAll(w http.ResponseWriter, r *http.Request) {
 	resJson, _ := json.Marshal(res)
 	w.WriteHeader(http.StatusOK)
 	w.Write(resJson)
+}
+
+func (a *App) GetURL(w http.ResponseWriter, r *http.Request) {
+	var urlEntry URLEntry
+	args := mux.Vars(r)
+	a.DB.Where("alias = ?", args["alias"]).First(&urlEntry)
+	url := urlEntry.URL
+	if url != "" {
+		http.Redirect(w, r, string(url), http.StatusFound)
+	} else {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "No such link")
+	}
 }
