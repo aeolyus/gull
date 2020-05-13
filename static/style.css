@@ -1,0 +1,84 @@
+html {
+  color: #171717;
+  background-color: #fefefe;
+}
+
+body {
+  margin: 0 auto;
+
+  animation: fadeIn ease .3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+form {
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 4em;
+
+  border: 0;
+  outline: 0;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  padding: .3em .4em .5em;
+  text-align: left;
+}
+
+@media screen and (max-width: 55em) {
+  form {
+    font-size: 2em;
+    padding: .3em .5em 1em;
+  }
+}
+
+input {
+  background: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  padding: inherit;
+  width: inherit;
+  box-sizing: inherit;
+  border: inherit;
+  outline: inherit;
+
+  /* Hide blinking cursor */
+  color: transparent;
+  text-shadow: 0 0 0 #171717;
+}
+
+::placeholder {
+  opacity: .5;
+}
+
+button {
+  background: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  padding: inherit;
+  border: inherit;
+  outline: inherit;
+
+  cursor: pointer;
+}
+
+.gradient-text {
+  /* Fallback color */
+  background-color: #ff906b;
+  background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
+  background-repeat: repeat;
+  background-size: 100%;
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+}
