@@ -15,10 +15,10 @@ func main() {
 	defer a.DB.Close()
 
 	r := mux.NewRouter()
-	r.Handle("/", http.FileServer(http.Dir("./static"))).Methods("GET")
 	r.HandleFunc("/", a.CreateShortURL).Methods("POST")
 	r.HandleFunc("/all", a.ListAll).Methods("GET")
 	r.HandleFunc("/s/{alias:.*}", a.GetURL).Methods("GET")
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/"))).Methods("GET")
 	http.Handle("/", r)
 
 	log.Println("Server is listening on port 8081")
