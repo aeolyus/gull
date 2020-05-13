@@ -5,11 +5,13 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
 	a := &handlers.App{}
-	a.Initialize("sqlite3", "./data.db")
+	os.MkdirAll("./data", os.ModePerm)
+	a.Initialize("sqlite3", "./data/data.db")
 	defer a.DB.Close()
 
 	r := mux.NewRouter()
