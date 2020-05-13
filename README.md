@@ -17,3 +17,6 @@ go get -d -v ./...
 go run server.go
 ```
 This will create a directory `./gull/data` where persistent data will be stored.
+
+## Acknowledgements
+Inspired by [mnml](https://github.com/liyasthomas/mnmlurl/)!
