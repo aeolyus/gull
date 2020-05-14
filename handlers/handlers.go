@@ -2,9 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/aeolyus/gull/utils"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -21,6 +19,10 @@ type URLEntry struct {
 	Alias string `gorm:"unique" json:"alias"`
 }
 
+type JSONRes struct {
+	ShortURL string `json:"shorturl"`
+}
+
 func (a *App) Initialize(dbDriver string, dbURI string) {
 	// Setup database
 	db, err := gorm.Open(dbDriver, dbURI)
@@ -33,55 +35,52 @@ func (a *App) Initialize(dbDriver string, dbURI string) {
 }
 
 func (a *App) ListAll(w http.ResponseWriter, r *http.Request) {
-	var res []URLEntry
-	a.DB.Find(&res)
-	resJson, _ := json.Marshal(res)
+	res := &[]URLEntry{}
+	a.DB.Find(res)
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write(resJson)
+	json.NewEncoder(w).Encode(res)
 }
 
 func (a *App) GetURL(w http.ResponseWriter, r *http.Request) {
-	var urlEntry URLEntry
+	u := &URLEntry{}
 	args := mux.Vars(r)
-	a.DB.Where("alias = ?", args["alias"]).First(&urlEntry)
-	url := urlEntry.URL
-	if url != "" {
-		http.Redirect(w, r, string(url), http.StatusFound)
+	a.DB.Where("alias = ?", args["alias"]).First(u)
+	if u.URL != "" {
+		http.Redirect(w, r, string(u.URL), http.StatusFound)
 	} else {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, "No such link")
+		http.Error(w, "No such link :(", http.StatusBadRequest)
 	}
 }
 
 func (a *App) CreateShortURL(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
-		log.Fatal("Could not parse JSON")
+	u := &URLEntry{}
+	err := json.NewDecoder(r.Body).Decode(u)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
-	reqURL := r.PostFormValue("url")
-	alias := r.PostFormValue("alias")
 	// Verify URL is valid
-	if !utils.IsValidUrl(reqURL) {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Invalid URL")
+	if !utils.IsValidUrl(u.URL) {
+		http.Error(w, "Invalid URL", http.StatusBadRequest)
 		return
 	}
 	// Check if URL entry already exists
-	var urlEntry URLEntry
-	a.DB.Where("url = ?", reqURL).Find(&urlEntry)
-	if urlEntry.URL != "" {
-		alias = urlEntry.Alias
+	existingURL := &URLEntry{}
+	a.DB.Where("url = ?", u.URL).Find(existingURL)
+	if existingURL.URL != "" {
+		u.Alias = existingURL.Alias
 	} else {
-		// Check if alias is already taken
-		for alias == "" || !a.DB.Where("alias = ?", alias).First(&urlEntry).RecordNotFound() {
-			alias = utils.RandString(6)
+		// Verify alias is unique
+		for u.Alias == "" || !a.DB.Where("alias = ?", u.Alias).First(u).RecordNotFound() {
+			u.Alias = utils.RandString(6)
 		}
-		newURLEntry := &URLEntry{URL: reqURL, Alias: alias}
-		a.DB.Create(newURLEntry)
+		a.DB.Create(u)
 	}
-
 	// Write HTTP Response
-	shortlink := r.Host + "/s/" + alias
-	w.WriteHeader(http.StatusCreated)
+	shortlink := r.Host + "/s/" + u.Alias
+	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Location", shortlink)
-	fmt.Fprintf(w, shortlink)
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(&JSONRes{ShortURL: shortlink})
 }
