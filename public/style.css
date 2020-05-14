@@ -47,10 +47,6 @@ input {
   box-sizing: inherit;
   border: inherit;
   outline: inherit;
-
-  /* Hide blinking cursor */
-  color: transparent;
-  text-shadow: 0 0 0 #171717;
 }
 
 ::placeholder {
