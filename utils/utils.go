@@ -2,23 +2,27 @@ package utils
 
 import (
 	"math/rand"
-	"net/url"
+	"strings"
 	"time"
 )
 
-// Charset for random string generator
-const Charset = "abcdefghijklmnopqrstuvwxyz" +
+// Alphanumeric charset
+const CHARSET = "abcdefghijklmnopqrstuvwxyz" +
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-// Tests a string to determine if it is a well-structured url or not
-func IsValidUrl(str string) bool {
-	u, err := url.Parse(str)
-	return err == nil && u.Scheme != "" && u.Host != ""
+// Tests whether a string is in the alphanumeric charset
+func IsAlphaNum(str string) bool {
+	for _, r := range []rune(str) {
+		if !strings.ContainsRune(CHARSET, r) {
+			return false
+		}
+	}
+	return true
 }
 
 // Generate a random alphanumeric string of given length
 func RandString(length int) string {
-	return randStringWithCharset(length, Charset)
+	return randStringWithCharset(length, CHARSET)
 }
 
 func randStringWithCharset(length int, charset string) string {

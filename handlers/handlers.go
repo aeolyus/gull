@@ -5,6 +5,7 @@ import (
 	"github.com/aeolyus/gull/utils"
 	"net/http"
 
+	valid "github.com/asaskevich/govalidator"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -49,7 +50,7 @@ func (a *App) GetURL(w http.ResponseWriter, r *http.Request) {
 	if u.URL != "" {
 		http.Redirect(w, r, string(u.URL), http.StatusFound)
 	} else {
-		http.Error(w, "No such link :(", http.StatusBadRequest)
+		http.Error(w, "No such link :(", http.StatusNotFound)
 	}
 }
 
@@ -61,7 +62,7 @@ func (a *App) CreateShortURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Verify URL is valid
-	if !utils.IsValidUrl(u.URL) {
+	if !valid.IsRequestURL(u.URL) {
 		http.Error(w, "Invalid URL", http.StatusBadRequest)
 		return
 	}
@@ -72,7 +73,7 @@ func (a *App) CreateShortURL(w http.ResponseWriter, r *http.Request) {
 		u.Alias = existingURL.Alias
 	} else {
 		// Verify alias is unique
-		for u.Alias == "" || !a.DB.Where("alias = ?", u.Alias).First(u).RecordNotFound() {
+		for u.Alias == "" || !a.DB.Where("alias = ?", u.Alias).First(existingURL).RecordNotFound() {
 			u.Alias = utils.RandString(6)
 		}
 		a.DB.Create(u)
