@@ -1,40 +1,23 @@
-html {
-  color: #171717;
-  background-color: #fefefe;
-}
-
 body {
-  margin: 0 auto;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 4em;
+
+  background-color: #fefefe;
+  color: #171717;
 
   animation: fadeIn ease .3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
 
-@keyframes fadeIn {
-  0% {opacity: 0;}
-  100% {opacity: 1;}
-}
-
 form {
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  font-size: 4em;
-
   border: 0;
   outline: 0;
   width: 100%;
   display: block;
   box-sizing: border-box;
-  padding: .3em .4em .5em;
   text-align: left;
-}
-
-@media screen and (max-width: 55em) {
-  form {
-    font-size: 2em;
-    padding: .3em .5em 1em;
-  }
 }
 
 input {
@@ -42,11 +25,12 @@ input {
   font-family: inherit;
   font-weight: inherit;
   font-size: inherit;
-  padding: inherit;
   width: inherit;
   box-sizing: inherit;
   border: inherit;
   outline: inherit;
+
+  padding: .25em .5em .25em;
 }
 
 ::placeholder {
@@ -58,11 +42,20 @@ button {
   font-family: inherit;
   font-weight: inherit;
   font-size: inherit;
-  padding: inherit;
   border: inherit;
   outline: inherit;
 
   cursor: pointer;
+  padding: .25em .5em .25em;
+}
+
+span {
+  display: block;
+  padding: .25em .5em .25em;
+
+  animation: fadeIn ease .3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
 .gradient-text {
@@ -77,4 +70,24 @@ button {
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
+}
+
+@media screen and (max-width: 55em) {
+  body {
+    font-size: 2em;
+  }
+  input {
+    padding: .5em 1em .5em;
+  }
+  button {
+    padding: .5em 1em .5em;
+  }
+  span {
+    padding: .5em 1em .5em;
+  }
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
