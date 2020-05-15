@@ -76,10 +76,13 @@ func TestInvalidCreate(t *testing.T) {
 		alias  string
 		status int
 	}{
-		"bad":      {url: "https/agoogle.com", alias: "ggls", status: http.StatusBadRequest},
-		"no colon": {url: "http//google.com", alias: "ggl", status: http.StatusBadRequest},
-		"empty":    {url: "", alias: "", status: http.StatusBadRequest},
-		"asdf":     {url: "asdf", alias: "", status: http.StatusBadRequest},
+		"bad":           {url: "https/agoogle.com", alias: "ggls", status: http.StatusBadRequest},
+		"no colon":      {url: "http//google.com", alias: "ggl", status: http.StatusBadRequest},
+		"empty":         {url: "", alias: "", status: http.StatusBadRequest},
+		"asdf":          {url: "asdf", alias: "", status: http.StatusBadRequest},
+		"spaces":        {url: "https://google.com", alias: "oh no spaces", status: http.StatusBadRequest},
+		"question mark": {url: "https://google.com", alias: "huh?", status: http.StatusBadRequest},
+		"percent":       {url: "https://google.com", alias: "test%20stuff", status: http.StatusBadRequest},
 	}
 
 	app := setup()

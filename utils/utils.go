@@ -2,22 +2,23 @@ package utils
 
 import (
 	"math/rand"
-	"strings"
+	"regexp"
 	"time"
 )
 
-// Alphanumeric charset
-const CHARSET = "abcdefghijklmnopqrstuvwxyz" +
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+const (
+	// Alphanumeric charset
+	CHARSET = "abcdefghijklmnopqrstuvwxyz" +
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+	// RFC 3986 Section 2.3 URI Unreserved Characters
+	URIUnreservedChars = `^([A-Za-z0-9_.~-])+$`
+)
 
 // Tests whether a string is in the alphanumeric charset
-func IsAlphaNum(str string) bool {
-	for _, r := range []rune(str) {
-		if !strings.ContainsRune(CHARSET, r) {
-			return false
-		}
-	}
-	return true
+func IsValidAlias(str string) bool {
+	valid, err := regexp.MatchString(URIUnreservedChars, str)
+	return valid && err == nil
 }
 
 // Generate a random alphanumeric string of given length

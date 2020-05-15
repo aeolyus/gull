@@ -66,6 +66,11 @@ func (a *App) CreateShortURL(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid URL", http.StatusBadRequest)
 		return
 	}
+	// Verify alias is valid
+	if u.Alias != "" && !utils.IsValidAlias(u.Alias) {
+		http.Error(w, "Invalid Alias", http.StatusBadRequest)
+		return
+	}
 	// Check if URL entry already exists
 	existingURL := &URLEntry{}
 	a.DB.Where("url = ?", u.URL).Find(existingURL)
