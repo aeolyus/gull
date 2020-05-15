@@ -5,7 +5,6 @@ import (
 	"github.com/aeolyus/gull/utils"
 	"net/http"
 
-	valid "github.com/asaskevich/govalidator"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -62,7 +61,7 @@ func (a *App) CreateShortURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Verify URL is valid
-	if !valid.IsRequestURL(u.URL) {
+	if !utils.IsValidURL(u.URL) {
 		http.Error(w, "Invalid URL", http.StatusBadRequest)
 		return
 	}
