@@ -2,24 +2,33 @@
 <html lang="en">
 
   <head>
-    <title>URL Shortener</title>
+    <title>gull</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Shorten URLs" />
+    <meta name="description" content="A simple, modern URL shortener" />
     <link rel="icon" href="data:,">
+    <script async defer src="https://use.fontawesome.com/e98027591e.js"></script>
+    <script async defer src="index.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
     <link href="style.css" rel="stylesheet" />
   </head>
 
   <body>
-    <form id="url-form">
-      <input id="url" name="url" type="text" placeholder="paste a long url" autofocus required /> <br>
-      <input id="alias" name="alias" type="text" placeholder="custom alias (optional)" /> <br>
-      <button id="btn" class="gradient-text">shorten</button>
-    </form>
-    <div id="result"></div>
-  </body>
+    <main>
+      <form id="url-form">
+        <input id="url" name="url" type="text" placeholder="paste a long url" autofocus required />
+        <input id="alias" name="alias" type="text" placeholder="custom alias (optional)" />
+        <button id="btn" class="gradient-text">shorten</button>
+      </form>
+      <div id="result"></div>
+    </main>
 
-  <script src="index.js"></script>
+    <footer>
+      <a href="https://github.com/aeolyus/gull">
+        <i class="fa fa-github"></i> made with <i class="fa fa-heart"></i> by aeolyus
+      </a>
+    </footer>
+
+  </body>
 
 </html>

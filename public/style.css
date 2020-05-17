@@ -3,12 +3,34 @@ body {
   font-weight: bold;
   font-size: 4em;
 
+  margin: 0 auto;
+
   background-color: #fefefe;
   color: #171717;
+  height: 100vh;
 
   animation: fadeIn ease .3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
+}
+
+main {
+  padding-bottom: 1em;
+}
+
+footer {
+  height: 2em;
+  bottom: 0;
+  padding: .5em 1em .5em;
+  color: #ff906b;
+  font-size: .5em;
+
+  position: absolute;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 form {
@@ -50,7 +72,7 @@ button {
 }
 
 span {
-  display: block;
+  display: inherit;
   padding: .25em .5em .25em;
 
   animation: fadeIn ease .3s;
@@ -84,6 +106,9 @@ span {
   }
   span {
     padding: .5em 1em .5em;
+  }
+  footer {
+    padding: 1em 2em 1em;
   }
 }
 

@@ -59,6 +59,10 @@ function shorten(event) {
     appendText("invalid alias", notok);
     return
   }
+  sendReq()
+}
+
+function sendReq() {
   formData = new FormData(htmlForm);
   fetch('/', {
     method: 'POST',
