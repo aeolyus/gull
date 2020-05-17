@@ -56,7 +56,7 @@ function shorten(event) {
     return
   }
   if (alias.value != "" && !isValidAlias(alias.value)) {
-    appendText("invalid alias", notok);
+    appendText("invalid alias, use only alphanumerics, underscores, periods, tildes, and dashes", notok);
     return
   }
   sendReq()
