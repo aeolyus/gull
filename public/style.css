@@ -4,6 +4,8 @@ body {
   font-size: 4em;
 
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 
   background-color: #fefefe;
   color: #171717;
@@ -15,17 +17,14 @@ body {
 }
 
 main {
-  padding-bottom: 1em;
+  flex: 1;
 }
 
 footer {
   height: 2em;
-  bottom: 0;
   padding: .5em 1em .5em;
   color: #ff906b;
   font-size: .5em;
-
-  position: absolute;
 }
 
 a {
