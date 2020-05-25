@@ -39,7 +39,7 @@ func TestCreate(t *testing.T) {
 	app := setup()
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			origURL := &URLEntry{
+			origURL := &urlEntry{
 				URL:   tc.url,
 				Alias: tc.alias,
 			}
@@ -56,11 +56,11 @@ func TestCreate(t *testing.T) {
 				t.Errorf("Status code is invalid. Expected %d. Got %d instead", tc.status, status)
 			}
 			// Alias might have been randomly generated so get from result instead
-			temp := &JSONRes{}
+			temp := &jsonRes{}
 			json.Unmarshal(rr.Body.Bytes(), temp)
 			origURL.Alias = strings.TrimPrefix(temp.ShortURL, "/s/")
 			// Test that the created url entry is correct.
-			createdURL := URLEntry{}
+			createdURL := urlEntry{}
 			app.DB.Where("url = ?", origURL.URL).First(&createdURL)
 			if createdURL != *origURL {
 				t.Errorf("Created entry is invalid. Expected %+v. Got %+v instead", origURL, createdURL)
@@ -88,7 +88,7 @@ func TestInvalidCreate(t *testing.T) {
 	app := setup()
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			origURL := &URLEntry{
+			origURL := &urlEntry{
 				URL:   tc.url,
 				Alias: tc.alias,
 			}
@@ -105,7 +105,7 @@ func TestInvalidCreate(t *testing.T) {
 				t.Errorf("Status code is invalid. Expected %d. Got %d instead", tc.status, status)
 			}
 			// Make sure no entries are created
-			createdEntry := &URLEntry{}
+			createdEntry := &urlEntry{}
 			if !app.DB.First(createdEntry).RecordNotFound() {
 				t.Errorf("Should not have created an entry")
 			}
@@ -129,7 +129,7 @@ func TestCorruptCreate(t *testing.T) {
 		t.Errorf("Status code is invalid. Expected %d. Got %d instead", http.StatusBadRequest, status)
 	}
 	// Make sure no entries are created
-	createdEntry := &URLEntry{}
+	createdEntry := &urlEntry{}
 	if !app.DB.First(createdEntry).RecordNotFound() {
 		t.Errorf("Should not have created an entry")
 	}
@@ -155,7 +155,7 @@ func TestGetURL(t *testing.T) {
 
 	app := setup()
 	for _, u := range seed {
-		origURL := &URLEntry{
+		origURL := &urlEntry{
 			URL:   u.url,
 			Alias: u.alias,
 		}
@@ -195,9 +195,9 @@ func TestListAll(t *testing.T) {
 	}
 
 	app := setup()
-	origList := make([]URLEntry, 0)
+	origList := make([]urlEntry, 0)
 	for _, tc := range tests {
-		origURL := &URLEntry{
+		origURL := &urlEntry{
 			URL:   tc.url,
 			Alias: tc.alias,
 		}
@@ -213,7 +213,7 @@ func TestListAll(t *testing.T) {
 	r := mux.NewRouter()
 	r.HandleFunc("/all", app.ListAll).Methods("GET")
 	r.ServeHTTP(rr, req)
-	lst := &[]URLEntry{}
+	lst := &[]urlEntry{}
 	json.Unmarshal(rr.Body.Bytes(), lst)
 	// Test that the status code is correct.
 	if status := rr.Code; status != http.StatusOK {

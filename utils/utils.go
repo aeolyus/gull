@@ -8,14 +8,14 @@ import (
 
 const (
 	// Alphanumeric charset
-	CHARSET = "abcdefghijklmnopqrstuvwxyz" +
+	alphaNumCharset = "abcdefghijklmnopqrstuvwxyz" +
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 	// RFC 3986 Section 2.3 URI Unreserved Characters
-	URIUnreservedChars = `^([A-Za-z0-9_.~-])+$`
+	uriUnreservedChars = `^([A-Za-z0-9_.~-])+$`
 
 	// https://gist.github.com/dperini/729294
-	URLRegex = `^` +
+	urlRegex = `^` +
 		// protocol identifier (optional)
 		// short syntax // still required
 		`(?:(?:(?:https?|ftp):)?\/\/)` +
@@ -51,20 +51,21 @@ const (
 		`$`
 )
 
+// IsValidURL checks if string is a valid url
 func IsValidURL(str string) bool {
-	valid, err := regexp.MatchString(URLRegex, str)
+	valid, err := regexp.MatchString(urlRegex, str)
 	return valid && err == nil
 }
 
-// Tests whether a string is in the alphanumeric charset
+// IsValidAlias tests whether a string is in the alphanumeric charset
 func IsValidAlias(str string) bool {
-	valid, err := regexp.MatchString(URIUnreservedChars, str)
+	valid, err := regexp.MatchString(uriUnreservedChars, str)
 	return valid && err == nil
 }
 
-// Generate a random alphanumeric string of given length
+// RandString generates a random alphanumeric string of given length
 func RandString(length int) string {
-	return randStringWithCharset(length, CHARSET)
+	return randStringWithCharset(length, alphaNumCharset)
 }
 
 func randStringWithCharset(length int, charset string) string {

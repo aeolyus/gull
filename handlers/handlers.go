@@ -7,22 +7,25 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	// Use the sqlite db driver
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
+// App represents the appplication itself
 type App struct {
 	DB *gorm.DB
 }
 
-type URLEntry struct {
+type urlEntry struct {
 	URL   string `gorm:"unique" json:"url"`
 	Alias string `gorm:"unique" json:"alias"`
 }
 
-type JSONRes struct {
+type jsonRes struct {
 	ShortURL string `json:"shorturl"`
 }
 
+// Initialize initializes the app, connects to database, and does auto migration
 func (a *App) Initialize(dbDriver string, dbURI string) {
 	// Setup database
 	db, err := gorm.Open(dbDriver, dbURI)
@@ -31,19 +34,21 @@ func (a *App) Initialize(dbDriver string, dbURI string) {
 	}
 	a.DB = db
 	// Schema Migration
-	db.AutoMigrate(&URLEntry{})
+	db.AutoMigrate(&urlEntry{})
 }
 
+// ListAll returns a JSON response of all the url entries in the database
 func (a *App) ListAll(w http.ResponseWriter, r *http.Request) {
-	res := &[]URLEntry{}
+	res := &[]urlEntry{}
 	a.DB.Find(res)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
 
+// GetURL takes a shortlink and redirects the user to the relevant link if it exists
 func (a *App) GetURL(w http.ResponseWriter, r *http.Request) {
-	u := &URLEntry{}
+	u := &urlEntry{}
 	args := mux.Vars(r)
 	a.DB.Where("alias = ?", args["alias"]).First(u)
 	if u.URL != "" {
@@ -53,8 +58,9 @@ func (a *App) GetURL(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// CreateShortURL will take a url and shorten it with an (custom) alias
 func (a *App) CreateShortURL(w http.ResponseWriter, r *http.Request) {
-	u := &URLEntry{}
+	u := &urlEntry{}
 	err := json.NewDecoder(r.Body).Decode(u)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -71,7 +77,7 @@ func (a *App) CreateShortURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Check if URL entry already exists
-	existingURL := &URLEntry{}
+	existingURL := &urlEntry{}
 	a.DB.Where("url = ?", u.URL).Find(existingURL)
 	if existingURL.URL != "" {
 		u.Alias = existingURL.Alias
@@ -87,5 +93,5 @@ func (a *App) CreateShortURL(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Location", shortlink)
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(&JSONRes{ShortURL: shortlink})
+	json.NewEncoder(w).Encode(&jsonRes{ShortURL: shortlink})
 }

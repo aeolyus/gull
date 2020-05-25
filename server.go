@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	PUBLIC_DIR string = "./public"
-	PORT       int    = 8081
+	publicDir string = "./public"
+	port      int    = 8081
 )
 
 func main() {
@@ -24,9 +24,9 @@ func main() {
 	r.HandleFunc("/", a.CreateShortURL).Methods("POST")
 	r.HandleFunc("/all", a.ListAll).Methods("GET")
 	r.HandleFunc("/s/{alias:.*}", a.GetURL).Methods("GET")
-	r.PathPrefix("/").Handler(http.FileServer(http.Dir(PUBLIC_DIR))).Methods("GET")
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir(publicDir))).Methods("GET")
 	http.Handle("/", r)
 
-	log.Println("Server is listening on port", PORT)
-	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(PORT), nil))
+	log.Println("Server is listening on port", port)
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(port), nil))
 }
