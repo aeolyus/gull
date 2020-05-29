@@ -1,5 +1,6 @@
 # gull
 A simple URL shortener made in Go
+![screenshot](https://i.imgur.com/Po7nHFi.png)
 
 ## Usage
 ### Docker
