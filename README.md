@@ -6,7 +6,7 @@ A simple URL shortener made in Go
 ### Docker
 Pull the image and run.
 ```
-docker run -d --name gull -v /gull-data/:/app/data/ -p 8081:8081 aeolyus/gull:latest
+docker run -d --name gull -v /gull-data/:/data/ -p 8081:8081 aeolyus/gull:latest
 ```
 This will preserve any persistent data under `/gull-data/`. Change this as needed.
 
