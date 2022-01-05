@@ -92,11 +92,13 @@ function isValidAlias(str) {
 }
 
 // Insert given string into the result
-function appendText(str, color = "#171717") {
+function appendText(str, color = "") {
   let span = document.createElement('span');
   span.textContent = str;
   result.appendChild(span);
-  span.style.color = color;
+  if (color) {
+    span.style.color = color;
+  }
 }
 
 // Clear out the results

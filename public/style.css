@@ -1,3 +1,15 @@
+:root {
+    --text: #171717;
+    --bg: #fefefe;
+}
+
+@media(prefers-color-scheme: dark) {
+    :root {
+        --bg: #171717;
+        --text: #fefefe;
+    }
+}
+
 body {
   font-family: "Poppins", sans-serif;
   font-weight: bold;
@@ -7,8 +19,8 @@ body {
   display: flex;
   flex-direction: column;
 
-  background-color: #fefefe;
-  color: #171717;
+  background-color: var(--bg);
+  color: var(--text);
   height: 100vh;
 
   animation: fadeIn ease .3s;
@@ -50,6 +62,7 @@ input {
   box-sizing: inherit;
   border: inherit;
   outline: inherit;
+  color: var(--text);
 
   padding: .25em .5em .25em;
 }
@@ -115,3 +128,4 @@ span {
   0% {opacity: 0;}
   100% {opacity: 1;}
 }
+
