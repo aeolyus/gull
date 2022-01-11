@@ -18,6 +18,9 @@ release: Dockerfile ## Build and push the container image for all platforms
 fmt: ## Format the code
 	go fmt ./...
 
+test: ## Run tests
+	go test -cover ./...
+
 help: Makefile ## Print this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| sort \
