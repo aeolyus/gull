@@ -8,7 +8,7 @@ COPY . .
 RUN go get -d -v ./...
 RUN go build -ldflags '-w -extldflags=-static' -o gull
 
-FROM scratch
+FROM busybox
 
 WORKDIR /
 
