@@ -1,0 +1,19 @@
+name: dev
+on:
+  pull_request:
+  push:
+    branches: [dev]
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+
+      - name: Test
+        run: make test
+
+      - name: Build
+        run: make build
