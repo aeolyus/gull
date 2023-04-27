@@ -6,7 +6,7 @@ run: ## Run the program
 	go run server.go
 
 image: Dockerfile ## Build container image
-	@docker build . -t ghcr.io/aeolyus/gull
+	@docker buildx build . -t ghcr.io/aeolyus/gull
 
 release: Dockerfile ## Build and push the container image for all platforms
 	-@docker buildx rm gull-builder
