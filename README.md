@@ -4,9 +4,18 @@ A simple URL shortener made in Go
 
 ## Usage
 ### Docker
-Pull the image and run.
+Optionally, build the container. Otherwise, the public one will be pulled down.
 ```
-docker run -d --name gull -v /gull-data/:/data/ -p 8081:8081 aeolyus/gull:latest
+make image
+```
+Run the container.
+```
+docker run \
+    -d \
+    --name gull \
+    -v /gull-data/:/data/ \
+    -p 8081:8081 \
+    ghcr.io/aeolyus/gull:latest
 ```
 This will preserve any persistent data under `/gull-data/`. Change this as needed.
 
@@ -14,8 +23,7 @@ This will preserve any persistent data under `/gull-data/`. Change this as neede
 ```
 git clone https://github.com/aeolyus/gull.git
 cd ./gull
-go get -d -v ./...
-go run server.go
+make run
 ```
 This will create a directory `./gull/data` where persistent data will be stored.
 
