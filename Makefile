@@ -5,15 +5,19 @@ default: help
 run: ## Run the program
 	go run server.go
 
-build: Dockerfile ## Build container image
-	@docker build . -t aeolyus/gull
+image: Dockerfile ## Build container image
+	@docker build . -t ghcr.io/aeolyus/gull
 
 release: Dockerfile ## Build and push the container image for all platforms
+	-@docker buildx rm gull-builder
+	@docker buildx create --name gull-builder --bootstrap --use
 	@docker buildx build . \
 		-t aeolyus/gull \
 		-t ghcr.io/aeolyus/gull \
 		--platform linux/arm,linux/arm64,linux/amd64 \
 		--push
+	@docker buildx stop
+	-@docker buildx rm gull-builder
 
 fmt: ## Format the code
 	go fmt ./...
