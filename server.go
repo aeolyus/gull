@@ -10,8 +10,14 @@ import (
 )
 
 const (
-	publicDir string = "./public"
-	port      int    = 8081
+	publicDir          string = "./public"
+	port               int    = 8081
+	envFlagAllowCreate string = "GULL_ALLOW_CREATE"
+)
+
+var (
+	allowCreateEnv      = os.Getenv(envFlagAllowCreate)
+	allowCreate    bool = allowCreateEnv == "true" || allowCreateEnv == ""
 )
 
 func main() {
@@ -21,7 +27,9 @@ func main() {
 	defer a.DB.Close()
 
 	r := mux.NewRouter()
-	r.HandleFunc("/", a.CreateShortURL).Methods("POST")
+	if allowCreate {
+		r.HandleFunc("/", a.CreateShortURL).Methods("POST")
+	}
 	r.HandleFunc("/all", a.ListAll).Methods("GET")
 	r.HandleFunc("/s/{alias:.*}", a.GetURL).Methods("GET")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir(publicDir))).Methods("GET")
