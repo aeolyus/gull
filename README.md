@@ -4,20 +4,15 @@ A simple URL shortener made in Go
 
 ## Usage
 ### Docker
-Optionally, build the container. Otherwise, the public one will be pulled down.
-```
-make image
-```
-Run the container.
 ```
 docker run \
     -d \
     --name gull \
-    -v /gull-data/:/data/ \
+    -v $DATA_DIR:/data/ \
     -p 8081:8081 \
     ghcr.io/aeolyus/gull:latest
 ```
-This will preserve any persistent data under `/gull-data/`. Change this as needed.
+This will preserve any persistent data under $DATA_DIR.
 
 ### From Source
 ```
